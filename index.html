@@ -1,22 +1,42 @@
 <!DOCTYPE html>
-<textarea class="bigbox" placeholder="Type your text here..."></textarea>
+<html>
+<head>
+  <style>
+    .bigbox {
+      width: 600px;
+      height: 300px;
+      font-size: 18px;
+      padding: 10px;
+    }
 
-<style>
-  .bigbox {
-    width: 600px;
-    height: 300px;
-    font-size: 18px;
-    padding: 10px;
+    .separator {
+      width: 600px;
+      height: 2px;
+      background-color: #000;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Input box -->
+  <textarea class="bigbox" placeholder="Type your text here..."></textarea>
+
+  <!-- Separator line -->
+  <div class="separator"></div>
+
+  <!-- Output box (readonly) -->
+  <textarea class="bigbox" placeholder="Encrypted text will appear here..." readonly></textarea>
+
+<button onclick="copyText()">Copy Encrypted Text!</button>
+
+<script>
+  function copyText() {
+    const text = document.getElementById("outputBox").value;
+    navigator.clipboard.writeText(text);
   }
-</style>
+</script>
 
-<textarea class="bigbox" placeholder="Encrypted text will appear here..." readonly></textarea>
-
-<style>
-  .bigbox {
-    width: 600px;
-    height: 300px;
-    font-size: 18px;
-    padding: 10px;
-  }
-</style>
+</body>
+</html>
