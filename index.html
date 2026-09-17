@@ -21,22 +21,56 @@
 <body>
 
   <!-- Input box -->
-  <textarea class="bigbox" placeholder="Type your text here..."></textarea>
+  <textarea class="bigbox" id="inputBox" placeholder="Type your text here..."></textarea>
 
-  <!-- Separator line -->
   <div class="separator"></div>
 
   <!-- Output box (readonly) -->
-  <textarea class="bigbox" placeholder="Encrypted text will appear here..." readonly></textarea>
+  <textarea class="bigbox" id="outputBox" placeholder="Encrypted text will appear here..." readonly></textarea>
 
-<button onclick="copyText()">Copy Encrypted Text!</button>
+  <button onclick="encryptText()">Encrypt!</button>
+  <button onclick="copyText()">Copy Encrypted Text!</button>
 
-<script>
-  function copyText() {
-    const text = document.getElementById("outputBox").value;
-    navigator.clipboard.writeText(text);
-  }
-</script>
+  <script>
+    async function encryptText() {
+      const text = document.getElementById("inputBox").value;
 
+      // Convert text → bytes
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+
+      // Generate AES key
+      const key = await crypto.subtle.generateKey(
+        { name: "AES-GCM", length: 256 },
+        true,
+        ["encrypt", "decrypt"]
+      );
+
+      // Generate random IV
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+
+      // Encrypt
+      const encrypted = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv },
+        key,
+        data
+      );
+
+      // Convert encrypted buffer → base64
+      const encryptedBytes = new Uint8Array(encrypted);
+      const base64Encrypted = btoa(String.fromCharCode(...encryptedBytes));
+
+      // Show encrypted text
+      document.getElementById("outputBox").value = base64Encrypted;
+    }
+
+    function copyText() {
+      const text = document.getElementById("outputBox").value;
+      navigator.clipboard.writeText(text);
+    }
+  </script>
+
+<button>Decrypt Text</button>
+<script src="decryptor.js"></script>
 </body>
 </html>
