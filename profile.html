@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CipherPlay Profile</title>
+  <meta charset="UTF-8" />
+
+  <!-- React + ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- React Router -->
+  <script src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #eee;
+      padding: 20px;
+    }
+    .profile-card {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script>
+    const { BrowserRouter, Routes, Route, useNavigate } = ReactRouterDOM;
+
+    // -----------------------------
+    // Profile Page Component
+    // -----------------------------
+    function ProfilePage() {
+      const navigate = useNavigate();
+
+      const loggedIn = localStorage.getItem("loggedIn") === "true";
+      const visitedLogin = localStorage.getItem("visitedLogin") === "true";
+
+      React.useEffect(() => {
+        if (!loggedIn || !visitedLogin) {
+          setTimeout(() => navigate("/"), 1000);
+        }
+      }, [loggedIn, visitedLogin]);
+
+      if (!loggedIn || !visitedLogin) {
+        return (
+          React.createElement("div", null,
+            React.createElement("h1", null, "404 User Not Found"),
+            React.createElement("p", null, "Redirecting to home…")
+          )
+        );
+      }
+
+      return (
+        React.createElement("div", { className: "profile-container" },
+          React.createElement("h1", null, "Welcome to your CipherPlay Profile 🔐"),
+          React.createElement("p", null, "Your encryption settings and saved ciphers live here."),
+          React.createElement("div", { className: "profile-card" },
+            React.createElement("h2", null, "Your Cipher Stats"),
+            React.createElement("ul", null,
+              React.createElement("li", null, "Encrypted messages: 42"),
+              React.createElement("li", null, "Saved keys: 3"),
+              React.createElement("li", null, "Last login: Today")
+            )
+          )
+        )
+      );
+    }
+
+    // -----------------------------
+    // Home Page Component
+    // -----------------------------
+    function HomePage() {
+      return (
+        React.createElement("div", null,
+          React.createElement("h1", null, "CipherPlay Home"),
+          React.createElement("p", null, "Welcome to the encryption playground.")
+        )
+      );
+    }
+
+    // -----------------------------
+    // App Router
+    // -----------------------------
+    function App() {
+      return (
+        React.createElement(BrowserRouter, null,
+          React.createElement(Routes, null,
+            React.createElement(Route, { path: "/", element: React.createElement(HomePage) }),
+            React.createElement(Route, { path: "/profile", element: React.createElement(ProfilePage) })
+          )
+        )
+      );
+    }
+
+    // -----------------------------
+    // Render App
+    // -----------------------------
+    ReactDOM.createRoot(document.getElementById("root")).render(
+      React.createElement(App)
+    );
+  </script>
+</body>
+</html>
