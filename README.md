@@ -1,3 +1,5 @@
 # available everywhere
 
 WE HAVE CODED FULL TRANSLATION, SO DO NOT EXCEPT THEM TO MAINLY BE ENGLISH.
+
+[Free Use](mrmichaelchapo-del.github.io/CipherPlay)
